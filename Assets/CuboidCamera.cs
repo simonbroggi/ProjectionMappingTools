@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class CuboidCamera : MonoBehaviour
 {
-    [SerializeField] Vector3 dimensions;
+    [SerializeField] Vector3 _dimensions;
+    public Vector3 dimensions {
+        get { return _dimensions; }
+        private set { _dimensions = value; }
+    }
     [SerializeField] float nearClipPlane = 0.3f;
     [SerializeField] float farClipPlane = 1000f;
     [SerializeField] bool reinitialize = false;
