@@ -10,17 +10,24 @@ public class CuboidCamera : MonoBehaviour
     [SerializeField] bool reinitialize = false;
 
     private bool initialized = false;
-    private Camera[] cameras = new Camera[6];
+    [SerializeField, HideInInspector] Camera[] cameras = new Camera[6];
 
     void OnValidate()
     {
         if(!initialized || reinitialize)
         {
-            Initialize();
+            UnityEditor.EditorApplication.delayCall += () =>
+            {
+                Initialize();
+                UpdateCameraValues();
+            };
             reinitialize = false;
         }
-
-        UpdateCameraValues();
+        else
+        {
+            UpdateCameraValues();
+        }
+        
     }
     void Initialize()
     {
@@ -32,10 +39,7 @@ public class CuboidCamera : MonoBehaviour
             #if UNITY_EDITOR
             if(c != null && c.gameObject != null)
             {
-                UnityEditor.EditorApplication.delayCall += () =>
-                {
-                    DestroyImmediate(c.gameObject);
-                };
+                DestroyImmediate(c.gameObject);
             }
             #else
             if(c != null && c.gameObject != null)
