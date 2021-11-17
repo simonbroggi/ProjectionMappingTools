@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEditor;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
+
+[RequireComponent(typeof(CuboidCamera))]
 public class CuboidRecorder : MonoBehaviour
 {
     RecorderController m_RecorderController;
@@ -28,11 +30,17 @@ public class CuboidRecorder : MonoBehaviour
         videoRecorder.OutputFormat = MovieRecorderSettings.VideoRecorderOutputFormat.MP4;
         videoRecorder.VideoBitRateMode = VideoBitrateMode.Low;
 
-        videoRecorder.ImageInputSettings = new GameViewInputSettings
+        videoRecorder.ImageInputSettings = new CameraInputSettings
         {
-            OutputWidth = 1920,
-            OutputHeight = 1080
+            CameraTag = "right"//,
+            // Source = ?? 
         };
+
+        // videoRecorder.ImageInputSettings = new GameViewInputSettings
+        // {
+        //     OutputWidth = 1920,
+        //     OutputHeight = 1080
+        // };
 
         videoRecorder.AudioInputSettings.PreserveAudio = true;
         videoRecorder.OutputFile = Path.Combine(mediaOutputFolder, "video_v") + DefaultWildcard.Take;

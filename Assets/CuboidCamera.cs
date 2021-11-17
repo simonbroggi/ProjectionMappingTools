@@ -60,26 +60,32 @@ public class CuboidCamera : MonoBehaviour
                 case 0:
                     camTransform.rotation = Quaternion.Euler(0f, 0f, 0f);
                     camTransform.name += " front";
+                    camTransform.gameObject.tag = "front";
                     break;
                 case 1:
                     camTransform.rotation = Quaternion.Euler(0f, 90f, 0f);
                     camTransform.name += " right";
+                    camTransform.gameObject.tag = "right";
                     break;
                 case 2:
                     camTransform.rotation = Quaternion.Euler(0f, 180f, 0f);
                     camTransform.name += " back";
+                    camTransform.gameObject.tag = "back";
                     break;
                 case 3:
                     camTransform.rotation = Quaternion.Euler(0f, 270f, 0f);
                     camTransform.name += " left";
+                    camTransform.gameObject.tag = "left";
                     break;
                 case 4:
                     camTransform.rotation = Quaternion.Euler(-90f, 0f, 0f);
                     camTransform.name += " up";
+                    camTransform.gameObject.tag = "up";
                     break;
                 case 5:
                     camTransform.rotation = Quaternion.Euler(90f, 0f, 0f);
                     camTransform.name += " down";
+                    camTransform.gameObject.tag = "down";
                     break;
                 default:
                     Debug.Log("More then six cameras??");
