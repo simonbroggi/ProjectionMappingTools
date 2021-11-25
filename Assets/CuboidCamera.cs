@@ -12,6 +12,7 @@ public class CuboidCamera : MonoBehaviour
     [SerializeField] float nearClipPlane = 0.3f;
     [SerializeField] float farClipPlane = 1000f;
     [SerializeField] bool reinitialize = false;
+    [SerializeField, Range(-.5f, 0.5f)] float horizonLevel = 0f;
 
     private bool initialized = false;
     [SerializeField, HideInInspector] Camera[] cameras = new Camera[6];
@@ -119,17 +120,20 @@ public class CuboidCamera : MonoBehaviour
             }
             Vector2 camAspect = new Vector2(1f, 1f);
             float camDepth = .5f;
+            Vector2 lensShift = new Vector2(0f,0f);
             switch(i)
             {
                 case 0:
                 case 2: // front and back cameras pointing towards Z and -Z
                     camAspect = new Vector2(dimensions.x, dimensions.y);
                     camDepth = dimensions.z / 2f;
+                    lensShift.y = horizonLevel;
                     break;
                 case 1:
                 case 3: // left and right cameras pointing towards X and -X
                     camAspect = new Vector2(dimensions.z, dimensions.y);
                     camDepth = dimensions.x / 2f;
+                    lensShift.y = horizonLevel;
                     break;
                 case 4:
                 case 5: // up and down cameras pointing towards Y and -Y
@@ -140,10 +144,11 @@ public class CuboidCamera : MonoBehaviour
                     Debug.Log("More then six cameras??");
                     break;
             }
-            cam.nearClipPlane = camDepth;
-            cam.farClipPlane = camDepth * 10f;
-            cam.sensorSize = camAspect * 36f;
+            cam.nearClipPlane = camDepth * nearClipPlane;
+            cam.farClipPlane = camDepth * farClipPlane;
+            cam.sensorSize = camAspect * nearClipPlane;
             cam.fieldOfView = 2f * Mathf.Rad2Deg * Mathf.Atan( (camAspect.y/2f) / camDepth );
+            cam.lensShift = lensShift;
         }
     }
 
