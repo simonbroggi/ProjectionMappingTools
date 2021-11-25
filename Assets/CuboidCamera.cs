@@ -32,7 +32,7 @@ public class CuboidCamera : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning("Cant reinitialize the prefab.");
+                Debug.LogWarning("Cant reinitialize prefab instance. Work on prefab or unpack it.");
             }
             reinitialize = false;
         }
