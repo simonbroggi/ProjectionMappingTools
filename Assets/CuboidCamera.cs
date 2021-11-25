@@ -22,11 +22,18 @@ public class CuboidCamera : MonoBehaviour
     {
         if(!initialized || reinitialize)
         {
-            UnityEditor.EditorApplication.delayCall += () =>
+            if( UnityEditor.PrefabUtility.GetPrefabInstanceStatus(gameObject) == UnityEditor.PrefabInstanceStatus.NotAPrefab )
             {
-                Initialize();
-                UpdateCameraValues();
-            };
+                UnityEditor.EditorApplication.delayCall += () =>
+                {
+                    Initialize();
+                    UpdateCameraValues();
+                };
+            }
+            else
+            {
+                Debug.LogWarning("Cant reinitialize the prefab.");
+            }
             reinitialize = false;
         }
         else
@@ -151,7 +158,7 @@ public class CuboidCamera : MonoBehaviour
             // Near and far clip planes are different depending on direction.
             cam.nearClipPlane = camDepth * nearClipFactor;
             cam.farClipPlane = camDepth * farClipFactor;
-            
+
             cam.sensorSize = camAspect;
             cam.gateFit = Camera.GateFitMode.None; // Stretch the sensor gate to fit exactly into the resolution gate.
             cam.fieldOfView = 2f * Mathf.Rad2Deg * Mathf.Atan( (camAspect.y/2f) / camDepth );
