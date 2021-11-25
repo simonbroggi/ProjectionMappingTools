@@ -58,6 +58,7 @@ public class CuboidCamera : MonoBehaviour
             go.hideFlags = HideFlags.NotEditable;
             Transform camTransform = go.transform;
             camTransform.parent = transform;
+            camTransform.position = Vector3.zero;
             Camera cam = cameras[i] = go.AddComponent<Camera>();
             
             switch(i) {
