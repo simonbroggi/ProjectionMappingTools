@@ -28,6 +28,19 @@ public class CuboidRecorder : MonoBehaviour
         controllerSettings.AddRecorderSettings(
             createMovieRecorderSettings("front", new Vector2(cuboidCamera.dimensions.x, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
         );
+        controllerSettings.AddRecorderSettings(
+            createMovieRecorderSettings("left", new Vector2(cuboidCamera.dimensions.z, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
+        );
+        controllerSettings.AddRecorderSettings(
+            createMovieRecorderSettings("back", new Vector2(cuboidCamera.dimensions.x, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
+        );
+        controllerSettings.AddRecorderSettings(
+            createMovieRecorderSettings("right", new Vector2(cuboidCamera.dimensions.z, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
+        );
+        controllerSettings.AddRecorderSettings(
+            createMovieRecorderSettings("up", new Vector2(cuboidCamera.dimensions.x, cuboidCamera.dimensions.z), 1080, mediaOutputFolder)
+        );
+
         // controllerSettings.AddRecorderSettings(
         //     createMovieRecorderSettings("right", new Vector2(cuboidCamera.dimensions.z, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
         // );
@@ -40,31 +53,33 @@ public class CuboidRecorder : MonoBehaviour
         m_RecorderController.StartRecording();
     }
 
-    MovieRecorderSettings createMovieRecorderSettings(string cameraTag, Vector2 aspect, int pixelHeight, string mediaOutputFolder)
+    RecorderSettings createMovieRecorderSettings(string cameraTag, Vector2 aspect, int pixelHeight, string mediaOutputFolder)
     {
-        var videoRecorder = ScriptableObject.CreateInstance<MovieRecorderSettings>();
+        var recorder = ScriptableObject.CreateInstance<ImageRecorderSettings>();
 
-        videoRecorder.name = "Right Video Recorder";
-        videoRecorder.Enabled = true;
+        recorder.name = "Right Video Recorder";
+        recorder.Enabled = true;
 
-        videoRecorder.OutputFormat = MovieRecorderSettings.VideoRecorderOutputFormat.MP4;
-        videoRecorder.VideoBitRateMode = VideoBitrateMode.Low;
+        recorder.OutputFormat = ImageRecorderSettings.ImageRecorderOutputFormat.PNG;
+        recorder.CaptureAlpha = false;
 
-        videoRecorder.ImageInputSettings = new CameraInputSettings
+        recorder.imageInputSettings = new CameraInputSettings
         {
             Source = ImageSource.TaggedCamera,
             CameraTag = cameraTag,
             OutputHeight = pixelHeight,
             OutputWidth = Mathf.RoundToInt(pixelHeight * aspect.x / aspect.y),
+            CaptureUI = false,
             FlipFinalOutput = true
         };
 
-        videoRecorder.AudioInputSettings.PreserveAudio = false;
-        videoRecorder.OutputFile = Path.Combine(mediaOutputFolder, cameraTag) + DefaultWildcard.Take;
+        // recorder.OutputFile = Path.Combine(mediaOutputFolder, "_png", "image_v") + DefaultWildcard.Take + "." + DefaultWildcard.Frame;
+        
+        recorder.OutputFile = Path.Combine(mediaOutputFolder, cameraTag) + DefaultWildcard.Take + "_" + DefaultWildcard.Frame;
 
-        Debug.Log("created video recorder " + cameraTag + " - " + videoRecorder.ImageInputSettings.OutputWidth + " * " + videoRecorder.ImageInputSettings.OutputHeight);
+        Debug.Log("created video recorder " + cameraTag + " - " + recorder.imageInputSettings.OutputWidth + " * " + recorder.imageInputSettings.OutputHeight);
 
-        return videoRecorder;
+        return recorder;
     }
 
     void OnDisable()
