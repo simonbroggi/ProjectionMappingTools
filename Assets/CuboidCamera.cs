@@ -147,17 +147,15 @@ public class CuboidCamera : MonoBehaviour
                     break;
             }
 
-            
-
             // This is confusing! todo: think of a better way to implement this.
             // Near and far clip planes are different depending on direction.
             cam.nearClipPlane = camDepth * nearClipFactor;
             cam.farClipPlane = camDepth * farClipFactor;
-            cam.sensorSize = camAspect;// * nearClipPlane;
+            
+            cam.sensorSize = camAspect;
             cam.gateFit = Camera.GateFitMode.None; // Stretch the sensor gate to fit exactly into the resolution gate.
             cam.fieldOfView = 2f * Mathf.Rad2Deg * Mathf.Atan( (camAspect.y/2f) / camDepth );
             cam.transform.localPosition = Vector3.up * camLocalYPosition;
-            // cam.transform.localPosition = Vector3.zero;
             cam.lensShift = lensShift;
             cam.targetDisplay = i;
         }
