@@ -15,6 +15,18 @@ public class CuboidRecorder : MonoBehaviour
 
     void OnEnable()
     {
+        // Bildsequenzen, nicht video
+        // ca 4000 px Breit bei der langen Wand
+        // lägnge breite: 260 * 285
+        // länge breite ungefähr quadratisch, höhe ca 3m
+        // 1920px breite für die kürzeren, doppelt so viel 
+        // aegypten: schnellere Fahrt
+        // Europa: keine Rotationen, tages loop
+        // alle scenen in BuildSettings
+        // 13.6m * 15m * 6m 
+
+        // todo: render auflösung unabhänging von camera seitenverhältnissen
+
         CuboidCamera cuboidCamera = GetComponent<CuboidCamera>();
 
         var controllerSettings = ScriptableObject.CreateInstance<RecorderControllerSettings>();
@@ -26,19 +38,19 @@ public class CuboidRecorder : MonoBehaviour
 
         // Setup Recording
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("front", new Vector2(cuboidCamera.dimensions.x, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("front", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y), 1080, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("left", new Vector2(cuboidCamera.dimensions.z, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("left", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y), 1080, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("back", new Vector2(cuboidCamera.dimensions.x, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("back", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y), 1080, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("right", new Vector2(cuboidCamera.dimensions.z, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("right", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y), 1080, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("up", new Vector2(cuboidCamera.dimensions.x, cuboidCamera.dimensions.z), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("up", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z), 1080, mediaOutputFolder)
         );
 
         // controllerSettings.AddRecorderSettings(
