@@ -15,18 +15,6 @@ public class CuboidRecorder : MonoBehaviour
 
     void OnEnable()
     {
-        // Bildsequenzen, nicht video
-        // ca 4000 px Breit bei der langen Wand
-        // lägnge breite: 260 * 285
-        // länge breite ungefähr quadratisch, höhe ca 3m
-        // 1920px breite für die kürzeren, doppelt so viel 
-        // aegypten: schnellere Fahrt
-        // Europa: keine Rotationen, tages loop
-        // alle scenen in BuildSettings
-        // 13.6m * 15m * 6m 
-
-        // todo: render auflösung unabhänging von camera seitenverhältnissen
-
         CuboidCamera cuboidCamera = GetComponent<CuboidCamera>();
 
         var controllerSettings = ScriptableObject.CreateInstance<RecorderControllerSettings>();
