@@ -15,7 +15,7 @@ public class CuboidCamera : MonoBehaviour
     [SerializeField] bool reinitialize = false;
     [SerializeField, Range(-.5f, 0.5f)] float horizonLevel = 0f;
 
-    private bool initialized = false;
+    [SerializeField, HideInInspector] bool initialized = false;
     [SerializeField, HideInInspector] Camera[] cameras = new Camera[6];
 
     void OnValidate()
@@ -57,7 +57,7 @@ public class CuboidCamera : MonoBehaviour
         for(int i=0; i < 6; i++)
         {
             GameObject go = new GameObject("Cuboid Cam " + (i+1));
-            // go.hideFlags = HideFlags.NotEditable;
+            go.hideFlags = HideFlags.NotEditable;
             Transform camTransform = go.transform;
             camTransform.parent = transform;
             camTransform.localPosition = Vector3.zero;
