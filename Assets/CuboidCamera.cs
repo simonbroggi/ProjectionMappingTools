@@ -16,7 +16,7 @@ public class CuboidCamera : MonoBehaviour
     [SerializeField, Range(-.5f, 0.5f)] float horizonLevel = 0f;
 
     private bool initialized = false;
-    [SerializeField, HideInInspector] Camera[] cameras = new Camera[5];
+    [SerializeField, HideInInspector] Camera[] cameras = new Camera[6];
 
     void OnValidate()
     {
@@ -53,8 +53,8 @@ public class CuboidCamera : MonoBehaviour
             #endif
         }
         
-        cameras = new Camera[5];
-        for(int i=0; i < 5; i++)
+        cameras = new Camera[6];
+        for(int i=0; i < 6; i++)
         {
             GameObject go = new GameObject("Cuboid Cam " + (i+1));
             // go.hideFlags = HideFlags.NotEditable;
@@ -104,7 +104,7 @@ public class CuboidCamera : MonoBehaviour
 
     void UpdateCameraValues()
     {
-        for(int i=0; i < 5; i++)
+        for(int i=0; i < 6; i++)
         {
             Camera cam = cameras[i];
             cam.nearClipPlane = nearClipFactor;
@@ -134,20 +134,13 @@ public class CuboidCamera : MonoBehaviour
                     camDepth = sensorDimensions.x / 2f;
                     lensShift.y = horizonLevel;
                     break;
-                case 4:
-                case 5: // up and down cameras pointing towards Y and -Y
+                case 4: // up camera pointing towards Y
                     camAspect = new Vector2(sensorDimensions.x, sensorDimensions.z);
                     camDepth = sensorDimensions.y / 2f - camLocalYPosition;
-                    // cam.transform.position = 
-                    
-                    // this camDepth calculation is wrong!!
-                    // camDepth = dimensions.y / 2f; // ( 2f - lensShiftV);
-
-                    // Vector2 sensorSize = camAspect * nearClipPlane;
-                    // camDepth += 
-                    //camDepth *= 1f+lensShiftV; 
-
-
+                    break;
+                case 5: // down cameras pointing towards -Y
+                    camAspect = new Vector2(sensorDimensions.x, sensorDimensions.z);
+                    camDepth = sensorDimensions.y / 2f + camLocalYPosition;
                     break;
                 default:
                     Debug.Log("More then six cameras??");
