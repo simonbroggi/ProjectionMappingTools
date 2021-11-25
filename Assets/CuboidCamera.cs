@@ -5,12 +5,12 @@ using UnityEngine.Serialization;
 
 public class CuboidCamera : MonoBehaviour
 {
-    [SerializeField, FormerlySerializedAs("_dimensions")] Vector3 _sensorDimensions;
+    [SerializeField, FormerlySerializedAs("_dimensions")] Vector3 _sensorDimensions = new Vector3(3, 2, 5);
     public Vector3 sensorDimensions {
         get { return _sensorDimensions; }
         private set { _sensorDimensions = value; }
     }
-    [SerializeField] float nearClipFactor = 0.3f;
+    [SerializeField] float nearClipFactor = 0.1f;
     [SerializeField] float farClipFactor = 1000f;
     [SerializeField] bool reinitialize = false;
     [SerializeField, Range(-.5f, 0.5f)] float horizonLevel = 0f;
