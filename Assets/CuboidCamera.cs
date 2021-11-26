@@ -166,6 +166,7 @@ public class CuboidCamera : MonoBehaviour
             cam.transform.localPosition = Vector3.up * camLocalYPosition;
             cam.lensShift = lensShift;
             cam.targetDisplay = individualDisplays ? i : 0;
+            cam.depth = individualDisplays ? 0 : i; // should fix strange recording issue where some cameras were rendered incorrectly
         }
     }
 
