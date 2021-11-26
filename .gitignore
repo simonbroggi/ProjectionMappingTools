@@ -74,3 +74,6 @@ crashlytics-build.properties
 *.blend1
 *.blend2
 *.blend3
+
+# Cuboid Camera recordings
+/CuboidRecordings/
