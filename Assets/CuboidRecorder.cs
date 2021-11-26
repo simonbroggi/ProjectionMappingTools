@@ -2,6 +2,7 @@
 
 using System.IO;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEditor;
 using UnityEditor.Recorder;
 using UnityEditor.Recorder.Input;
@@ -12,6 +13,7 @@ public class CuboidRecorder : MonoBehaviour
     RecorderController m_RecorderController;
 
     [SerializeField] string recordingFolder = "CuboidRecordings";
+    [SerializeField] bool addSceneSubfolder = true;
 
     void OnEnable()
     {
@@ -21,8 +23,7 @@ public class CuboidRecorder : MonoBehaviour
         m_RecorderController = new RecorderController(controllerSettings);
 
         var mediaOutputFolder = Path.Combine(Application.dataPath, "..", recordingFolder);
-        // animation output is an asset that must be created in Assets folder
-        // var animationOutputFolder = Path.Combine(Application.dataPath, recordingFolder);
+        if(addSceneSubfolder) mediaOutputFolder = Path.Combine(mediaOutputFolder, SceneManager.GetActiveScene().name);
 
         // Setup Recording
         controllerSettings.AddRecorderSettings(
