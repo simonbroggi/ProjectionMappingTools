@@ -10,7 +10,11 @@ public class CuboidCamera : MonoBehaviour
         get { return _sensorDimensions; }
         private set { _sensorDimensions = value; }
     }
-    [SerializeField] bool individualDisplays = true;
+    [SerializeField] bool _individualDisplays = true;
+    public bool individualDisplays {
+        get { return _individualDisplays; }
+        private set { _individualDisplays = value; }
+    }
     [SerializeField] float nearClipFactor = 0.1f;
     [SerializeField] float farClipFactor = 1000f;
     [SerializeField] bool reinitialize = false;

@@ -79,6 +79,16 @@ public class CuboidRecorder : MonoBehaviour
         m_RecorderController.PrepareRecording();
         m_RecorderController.StartRecording();
     }
+
+    void Start()
+    {
+        CuboidCamera cam = GetComponent<CuboidCamera>();
+        if(cam.individualDisplays)
+        {
+            Debug.LogWarning("Unset Individual Displays checkbox and select Display 1 in Game View before recording.");
+        }
+    }
+
     void OnValidate()
     {
         CuboidCamera cam = GetComponent<CuboidCamera>();
@@ -190,7 +200,7 @@ public class CuboidRecorder : MonoBehaviour
 
         recorder.OutputFile = Path.Combine(mediaOutputFolder, cameraFolderName, cameraTag + "_") + DefaultWildcard.Frame;
 
-        Debug.Log("created video recorder " + cameraTag + " - " + recorder.imageInputSettings.OutputWidth + " * " + recorder.imageInputSettings.OutputHeight);
+        // Debug.Log("created video recorder " + cameraTag + " - " + recorder.imageInputSettings.OutputWidth + " * " + recorder.imageInputSettings.OutputHeight);
 
         return recorder;
     }
