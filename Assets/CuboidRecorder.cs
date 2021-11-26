@@ -143,7 +143,34 @@ public class CuboidRecorder : MonoBehaviour
             FlipFinalOutput = cameraTag == "down" ? false : true
         };
 
-        recorder.OutputFile = Path.Combine(mediaOutputFolder, cameraTag, cameraTag + "_") + DefaultWildcard.Frame;
+        string cameraFolderName;
+        switch(cameraTag)
+        {
+            case "front":
+                cameraFolderName = "1";
+            break;
+            case "right":
+                cameraFolderName = "2";
+            break;
+            case "back":
+                cameraFolderName = "3";
+            break;
+            case "left":
+                cameraFolderName = "4";
+            break;
+            case "up":
+                cameraFolderName = "5";
+            break;
+            case "down":
+                cameraFolderName = "6";
+            break;
+            default:
+                cameraFolderName = "";
+                break;
+        }
+        cameraFolderName += "_" + cameraTag;
+
+        recorder.OutputFile = Path.Combine(mediaOutputFolder, cameraFolderName, cameraTag + "_") + DefaultWildcard.Frame;
 
         Debug.Log("created video recorder " + cameraTag + " - " + recorder.imageInputSettings.OutputWidth + " * " + recorder.imageInputSettings.OutputHeight);
 
