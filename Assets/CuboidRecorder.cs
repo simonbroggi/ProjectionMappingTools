@@ -12,8 +12,9 @@ public class CuboidRecorder : MonoBehaviour
 {
     RecorderController m_RecorderController;
 
-    [SerializeField] string recordingFolder = "CuboidRecordings";
-    [SerializeField] bool addSceneSubfolder = true;
+    [SerializeField] string outputFolder = "CuboidRecordings";
+    [SerializeField] bool sceneSubfolder = true;
+    [SerializeField] Vector3Int outputDimensions = new Vector3Int(0, 1080, 0);
 
     void OnEnable()
     {
@@ -22,8 +23,8 @@ public class CuboidRecorder : MonoBehaviour
         var controllerSettings = ScriptableObject.CreateInstance<RecorderControllerSettings>();
         m_RecorderController = new RecorderController(controllerSettings);
 
-        var mediaOutputFolder = Path.Combine(Application.dataPath, "..", recordingFolder);
-        if(addSceneSubfolder) mediaOutputFolder = Path.Combine(mediaOutputFolder, SceneManager.GetActiveScene().name);
+        var mediaOutputFolder = Path.Combine(Application.dataPath, "..", outputFolder);
+        if(sceneSubfolder) mediaOutputFolder = Path.Combine(mediaOutputFolder, SceneManager.GetActiveScene().name);
 
         // Setup Recording
         controllerSettings.AddRecorderSettings(
