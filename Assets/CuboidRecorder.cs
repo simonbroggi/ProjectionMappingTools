@@ -140,7 +140,7 @@ public class CuboidRecorder : MonoBehaviour
             OutputHeight = height,
             OutputWidth = width,
             CaptureUI = false,
-            FlipFinalOutput = true
+            FlipFinalOutput = cameraTag == "down" ? false : true
         };
 
         recorder.OutputFile = Path.Combine(mediaOutputFolder, cameraTag, cameraTag + "_") + DefaultWildcard.Frame;
