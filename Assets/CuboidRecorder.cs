@@ -34,7 +34,7 @@ public class CuboidRecorder : MonoBehaviour
                                                             finalOutputDimensions.x, finalOutputDimensions.y, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("left", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
+            createMovieRecorderSettings("right", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
                                                             finalOutputDimensions.z, finalOutputDimensions.y, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
@@ -42,7 +42,7 @@ public class CuboidRecorder : MonoBehaviour
                                                             finalOutputDimensions.x, finalOutputDimensions.y, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("right", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
+            createMovieRecorderSettings("left", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
                                                             finalOutputDimensions.z, finalOutputDimensions.y, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
@@ -127,7 +127,7 @@ public class CuboidRecorder : MonoBehaviour
     {
         var recorder = ScriptableObject.CreateInstance<ImageRecorderSettings>();
 
-        recorder.name = "Right Video Recorder";
+        recorder.name = cameraTag + " Video Recorder";
         recorder.Enabled = true;
 
         recorder.OutputFormat = ImageRecorderSettings.ImageRecorderOutputFormat.PNG;
