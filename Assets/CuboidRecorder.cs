@@ -10,6 +10,19 @@ using UnityEditor.Recorder.Input;
 [RequireComponent(typeof(CuboidCamera))]
 public class CuboidRecorder : MonoBehaviour
 {
+
+    [System.Flags]
+    enum CameraDirections
+    {
+        front = 1,
+        right = 2,
+        back = 4,
+        left = 8,
+        up = 16,
+        down = 32
+    }
+    [SerializeField] CameraDirections recordDirections = (CameraDirections)31; //render all but down by default
+
     RecorderController m_RecorderController;
 
     [SerializeField] string outputFolder = "CuboidRecordings";
@@ -29,28 +42,33 @@ public class CuboidRecorder : MonoBehaviour
         if(sceneSubfolder) mediaOutputFolder = Path.Combine(mediaOutputFolder, SceneManager.GetActiveScene().name);
 
         // Setup Recording
-        controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("front", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y),
-                                                            finalOutputDimensions.x, finalOutputDimensions.y, mediaOutputFolder)
-        );
-        controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("right", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
+        if(recordDirections.HasFlag(CameraDirections.front))
+            controllerSettings.AddRecorderSettings(
+                createMovieRecorderSettings("front", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y),
+                                                            finalOutputDimensions.x, finalOutputDimensions.y, mediaOutputFolder) );
+        if(recordDirections.HasFlag(CameraDirections.right))
+            controllerSettings.AddRecorderSettings(
+                createMovieRecorderSettings("right", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
                                                             finalOutputDimensions.z, finalOutputDimensions.y, mediaOutputFolder)
         );
-        controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("back", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y),
+        if(recordDirections.HasFlag(CameraDirections.back))
+            controllerSettings.AddRecorderSettings(
+                createMovieRecorderSettings("back", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y),
                                                             finalOutputDimensions.x, finalOutputDimensions.y, mediaOutputFolder)
         );
-        controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("left", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
+        if(recordDirections.HasFlag(CameraDirections.left))
+            controllerSettings.AddRecorderSettings(
+                createMovieRecorderSettings("left", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
                                                             finalOutputDimensions.z, finalOutputDimensions.y, mediaOutputFolder)
         );
-        controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("up", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z),
+        if(recordDirections.HasFlag(CameraDirections.up))
+            controllerSettings.AddRecorderSettings(
+                createMovieRecorderSettings("up", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z),
                                                             finalOutputDimensions.x, finalOutputDimensions.z, mediaOutputFolder)
         );
-        controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("down", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z),
+        if(recordDirections.HasFlag(CameraDirections.down))
+            controllerSettings.AddRecorderSettings(
+                createMovieRecorderSettings("down", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z),
                                                             finalOutputDimensions.x, finalOutputDimensions.z, mediaOutputFolder)
         );
 
