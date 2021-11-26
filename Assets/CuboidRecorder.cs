@@ -15,6 +15,7 @@ public class CuboidRecorder : MonoBehaviour
     [SerializeField] string outputFolder = "CuboidRecordings";
     [SerializeField] bool sceneSubfolder = true;
     [SerializeField] Vector3Int outputDimensions = new Vector3Int(0, 1080, 0);
+    [SerializeField] Vector3Int finalOutputDimensions;
 
     void OnEnable()
     {
@@ -28,22 +29,28 @@ public class CuboidRecorder : MonoBehaviour
 
         // Setup Recording
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("front", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("front", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y),
+                                                            finalOutputDimensions.x, finalOutputDimensions.y, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("left", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("left", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
+                                                            finalOutputDimensions.z, finalOutputDimensions.y, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("back", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("back", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.y),
+                                                            finalOutputDimensions.x, finalOutputDimensions.y, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("right", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("right", new Vector2(cuboidCamera.sensorDimensions.z, cuboidCamera.sensorDimensions.y),
+                                                            finalOutputDimensions.z, finalOutputDimensions.y, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("up", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("up", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z),
+                                                            finalOutputDimensions.x, finalOutputDimensions.z, mediaOutputFolder)
         );
         controllerSettings.AddRecorderSettings(
-            createMovieRecorderSettings("down", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z), 1080, mediaOutputFolder)
+            createMovieRecorderSettings("down", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z),
+                                                            finalOutputDimensions.x, finalOutputDimensions.z, mediaOutputFolder)
         );
 
         controllerSettings.SetRecordModeToManual();
@@ -53,8 +60,69 @@ public class CuboidRecorder : MonoBehaviour
         m_RecorderController.PrepareRecording();
         m_RecorderController.StartRecording();
     }
+    void OnValidate()
+    {
+        CuboidCamera cam = GetComponent<CuboidCamera>();
+        if(outputDimensions.x < 0) outputDimensions.x = 0;
+        if(outputDimensions.y < 0) outputDimensions.y = 0;
+        if(outputDimensions.z < 0) outputDimensions.z = 0;
+        finalOutputDimensions = calculateFinalOutputDimensions(cam.sensorDimensions, outputDimensions);
+    }
+    Vector3Int calculateFinalOutputDimensions(Vector3 sd, Vector3Int od)
+    {
+        Vector3Int finalOD = od;
+        if(finalOD.x == 0)
+        {
+            if(od.y != 0)
+            {
+                finalOD.x = Mathf.RoundToInt(od.y * sd.x / sd.y);
+            }
+            else if(od.z != 0)
+            {
+                finalOD.x = Mathf.RoundToInt(od.z * sd.x / sd.z);
+            }
+            else
+            {
+                Debug.LogWarning("undefined output dimension");
+                return Vector3Int.one * 256;
+            }
+        }
+        if(finalOD.z == 0)
+        {
+            if(od.x != 0)
+            {
+                finalOD.z = Mathf.RoundToInt(od.x * sd.z / sd.x);
+            }
+            else if(od.y != 0)
+            {
+                finalOD.z = Mathf.RoundToInt(od.y * sd.z / sd.y);
+            }
+            else
+            {
+                Debug.LogWarning("undefined output dimension");
+                return Vector3Int.one * 256;
+            }
+        }
+        if(finalOD.y == 0)
+        {
+            if(od.x != 0)
+            {
+                finalOD.y = Mathf.RoundToInt(od.x * sd.y / sd.x);
+            }
+            else if(od.z != 0)
+            {
+                finalOD.y = Mathf.RoundToInt(od.z * sd.y / sd.z);
+            }
+            else
+            {
+                Debug.LogWarning("undefined output dimension");
+                return Vector3Int.one * 256;
+            }
+        }
+        return finalOD;
+    }
 
-    RecorderSettings createMovieRecorderSettings(string cameraTag, Vector2 aspect, int pixelHeight, string mediaOutputFolder)
+    RecorderSettings createMovieRecorderSettings(string cameraTag, Vector2 aspect, int width, int height, string mediaOutputFolder)
     {
         var recorder = ScriptableObject.CreateInstance<ImageRecorderSettings>();
 
@@ -68,8 +136,8 @@ public class CuboidRecorder : MonoBehaviour
         {
             Source = ImageSource.TaggedCamera,
             CameraTag = cameraTag,
-            OutputHeight = pixelHeight,
-            OutputWidth = Mathf.RoundToInt(pixelHeight * aspect.x / aspect.y),
+            OutputHeight = height,
+            OutputWidth = width,
             CaptureUI = false,
             FlipFinalOutput = true
         };
