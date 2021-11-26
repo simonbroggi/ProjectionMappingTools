@@ -14,6 +14,7 @@ public class CuboidRecorder : MonoBehaviour
 
     [SerializeField] string outputFolder = "CuboidRecordings";
     [SerializeField] bool sceneSubfolder = true;
+    [SerializeField] float frameRate = 30;
     [SerializeField] Vector3Int outputDimensions = new Vector3Int(0, 1080, 0);
     [SerializeField] Vector3Int finalOutputDimensions;
 
@@ -54,7 +55,7 @@ public class CuboidRecorder : MonoBehaviour
         );
 
         controllerSettings.SetRecordModeToManual();
-        controllerSettings.FrameRate = 30.0f;
+        controllerSettings.FrameRate = frameRate;
 
         RecorderOptions.VerboseMode = false;
         m_RecorderController.PrepareRecording();
