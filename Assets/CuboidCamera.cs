@@ -10,6 +10,7 @@ public class CuboidCamera : MonoBehaviour
         get { return _sensorDimensions; }
         private set { _sensorDimensions = value; }
     }
+    [SerializeField] bool individualDisplays = true;
     [SerializeField] float nearClipFactor = 0.1f;
     [SerializeField] float farClipFactor = 1000f;
     [SerializeField] bool reinitialize = false;
@@ -164,7 +165,7 @@ public class CuboidCamera : MonoBehaviour
             cam.fieldOfView = 2f * Mathf.Rad2Deg * Mathf.Atan( (camAspect.y/2f) / camDepth );
             cam.transform.localPosition = Vector3.up * camLocalYPosition;
             cam.lensShift = lensShift;
-            cam.targetDisplay = i;
+            cam.targetDisplay = individualDisplays ? i : 0;
         }
     }
 
