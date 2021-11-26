@@ -11,7 +11,7 @@ public class CuboidRecorder : MonoBehaviour
 {
     RecorderController m_RecorderController;
 
-    const string recordingFolder = "CuboidRecordings";
+    [SerializeField] string recordingFolder = "CuboidRecordings";
 
     void OnEnable()
     {
@@ -40,10 +40,9 @@ public class CuboidRecorder : MonoBehaviour
         controllerSettings.AddRecorderSettings(
             createMovieRecorderSettings("up", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z), 1080, mediaOutputFolder)
         );
-
-        // controllerSettings.AddRecorderSettings(
-        //     createMovieRecorderSettings("right", new Vector2(cuboidCamera.dimensions.z, cuboidCamera.dimensions.y), 1080, mediaOutputFolder)
-        // );
+        controllerSettings.AddRecorderSettings(
+            createMovieRecorderSettings("down", new Vector2(cuboidCamera.sensorDimensions.x, cuboidCamera.sensorDimensions.z), 1080, mediaOutputFolder)
+        );
 
         controllerSettings.SetRecordModeToManual();
         controllerSettings.FrameRate = 30.0f;
@@ -73,9 +72,7 @@ public class CuboidRecorder : MonoBehaviour
             FlipFinalOutput = true
         };
 
-        // recorder.OutputFile = Path.Combine(mediaOutputFolder, "_png", "image_v") + DefaultWildcard.Take + "." + DefaultWildcard.Frame;
-        
-        recorder.OutputFile = Path.Combine(mediaOutputFolder, cameraTag) + DefaultWildcard.Take + "_" + DefaultWildcard.Frame;
+        recorder.OutputFile = Path.Combine(mediaOutputFolder, cameraTag, cameraTag + "_") + DefaultWildcard.Frame;
 
         Debug.Log("created video recorder " + cameraTag + " - " + recorder.imageInputSettings.OutputWidth + " * " + recorder.imageInputSettings.OutputHeight);
 
